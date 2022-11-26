@@ -21,9 +21,9 @@ func NewRestaurantRepository(db *sqlx.DB) *restaurantRepository {
 
 func (r *restaurantRepository) InsertRestarant(restaurant model.Restaurant) error {
 	_, err := r.db.Query(`
-	INSERT INTO restaurant (name, latitude, longitude)
-	VALUES (?, ?, ?)
-`,
+		INSERT INTO restaurant (name, latitude, longitude)
+		VALUES (?, ?, ?)
+	`,
 		restaurant.Name,
 		restaurant.Latitude,
 		restaurant.Longitude,
