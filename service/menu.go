@@ -2,6 +2,7 @@ package service
 
 import (
 	model "github.com/BounkBU/kurester/models"
+	"github.com/BounkBU/kurester/pkg/util"
 	"github.com/BounkBU/kurester/repository"
 	log "github.com/sirupsen/logrus"
 )
@@ -12,7 +13,8 @@ type menuService struct {
 
 type MenuService interface {
 	CreateNewMenu(model.Menu) error
-	GetSpicynessRatio() ([]model.Ratio, error)
+	GetSpicynessRatio() ([]model.SpicynessRatio, error)
+	GetPriceRatio() (model.PriceRatio, error)
 }
 
 func NewMenuService(menuRepository repository.MenuRepository) *menuService {
@@ -29,10 +31,10 @@ func (s *menuService) CreateNewMenu(newMenu model.Menu) error {
 	return err
 }
 
-func (s *menuService) GetSpicynessRatio() ([]model.Ratio, error) {
+func (s *menuService) GetSpicynessRatio() ([]model.SpicynessRatio, error) {
 	log.Info("Start getting spicyness ratio")
 	defer log.Info("End getting spicyness ratio")
-	var spicynessRatios []model.Ratio
+	var spicynessRatios []model.SpicynessRatio
 
 	ratios, err := s.menuRepository.SelectIsSpicyRatio()
 	if err != nil {
@@ -46,7 +48,7 @@ func (s *menuService) GetSpicynessRatio() ([]model.Ratio, error) {
 		} else {
 			ratioName = "Spicy"
 		}
-		spicynessRatio := model.Ratio{
+		spicynessRatio := model.SpicynessRatio{
 			Name:    ratioName,
 			Percent: ratio.Percent,
 		}
@@ -54,4 +56,28 @@ func (s *menuService) GetSpicynessRatio() ([]model.Ratio, error) {
 	}
 
 	return spicynessRatios, nil
+}
+
+func (s *menuService) GetPriceRatio() (model.PriceRatio, error) {
+	log.Info("Start getting price ratio")
+	defer log.Info("End getting price ratio")
+
+	results := make(map[string]int)
+	formPrice, err := s.menuRepository.SelectSubmitFormPrice()
+	if err != nil {
+		return model.PriceRatio{}, err
+	}
+
+	log.Info(formPrice)
+
+	for _, form := range formPrice {
+		priceRange := util.PriceCountingHelper(form.Price)
+		results[priceRange] += 1
+	}
+
+	priceRatio := model.PriceRatio{
+		Results: results,
+	}
+
+	return priceRatio, nil
 }
