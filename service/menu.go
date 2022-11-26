@@ -11,7 +11,7 @@ type menuService struct {
 }
 
 type MenuService interface {
-	CreateNewMenu(newMenu model.Menu) error
+	CreateNewMenu(model.Menu) error
 }
 
 func NewMenuService(menuRepository repository.MenuRepository) *menuService {

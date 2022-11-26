@@ -10,7 +10,7 @@ type menuRepository struct {
 }
 
 type MenuRepository interface {
-	InsertMenu(restaurant model.Menu) error
+	InsertMenu(model.Menu) error
 }
 
 func NewMenuRepository(db *sqlx.DB) *menuRepository {
@@ -19,16 +19,16 @@ func NewMenuRepository(db *sqlx.DB) *menuRepository {
 	}
 }
 
-func (r *menuRepository) InsertMenu(restaurant model.Menu) error {
+func (r *menuRepository) InsertMenu(menu model.Menu) error {
 	_, err := r.db.Query(`
 		INSERT INTO menu (restaurant_id, name, type, price, is_spicy)
 		VALUES (?, ?, ?, ?, ?)
 	`,
-		restaurant.RestaurantId,
-		restaurant.Name,
-		restaurant.Type,
-		restaurant.Price,
-		restaurant.IsSpicy,
+		menu.RestaurantId,
+		menu.Name,
+		menu.Type,
+		menu.Price,
+		menu.IsSpicy,
 	)
 	return err
 }
