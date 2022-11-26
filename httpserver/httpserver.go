@@ -3,6 +3,8 @@ package httpserver
 import (
 	"github.com/BounkBU/kurester/config"
 	"github.com/BounkBU/kurester/handler"
+	"github.com/BounkBU/kurester/repository"
+	"github.com/BounkBU/kurester/service"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	log "github.com/sirupsen/logrus"
@@ -24,8 +26,13 @@ func NewHTTPServer(config *config.Config, db *sqlx.DB) *Server {
 	}
 }
 
-func (s *Server) SetUpRouter() {
-	s.App.GET("/", handler.HealthCheckHandler)
+func (server *Server) SetUpRouter() {
+	server.App.GET("/", handler.HealthCheckHandler)
+
+	restaurantRepository := repository.NewRestaurantRepository(server.Database)
+	restaurantService := service.NewRestaurantService(restaurantRepository)
+	restaurantHandler := handler.NewRestaurantHandler(restaurantService)
+	server.App.POST("/restarants", restaurantHandler.CreateNewRestaurantHandler)
 }
 
 func (server *Server) Start() {
@@ -33,6 +40,6 @@ func (server *Server) Start() {
 
 	port := server.Config.App.Port
 
-	log.Infof("Server is starting on port : %s", port)
+	log.Infof("Server is starting on port: %s", port)
 	server.App.Run(":" + port)
 }
