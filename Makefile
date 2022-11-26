@@ -1,3 +1,9 @@
+MYSQL_HOSTNAME := 127.0.0.1
+MYSQL_PORT := 3306
+MYSQL_USERNAME := root
+MYSQL_PASSWORD := secret
+MYSQL_DATABASE := kurester
+
 server:
 	go run main.go
 
@@ -8,9 +14,9 @@ docs:
 	swag init -g httpserver/httpserver.go
 
 migrateup:
-	migrate -path pkg/database/migration -database "root:secret@tcp(mysql://127.0.0.1:3306)/kurester?parseTime=true" -verbose up
+	migrate -path pkg/database/migration -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME}:${MYSQL_PORT})/${MYSQL_DATABASE}?parseTime=true" -verbose up
 
 migratedown:
-	migrate -path pkg/database/migration -database "root:secret@tcp(mysql://127.0.0.1:3306)/kurester?parseTime=true" -verbose down
+	migrate -path pkg/database/migration -database "mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOSTNAME}:${MYSQL_PORT})/${MYSQL_DATABASE}?parseTime=true" -verbose down
 
 .PHONY: server deps docs migrateup migratedown
