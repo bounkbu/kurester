@@ -11,8 +11,6 @@ type menuRepository struct {
 
 type MenuRepository interface {
 	InsertMenu(model.Menu) error
-	SelectIsSpicyRatio() ([]model.SpicynessRatio, error)
-	SelectSubmitFormPrice() ([]model.SubmitFormPrice, error)
 }
 
 func NewMenuRepository(db *sqlx.DB) *menuRepository {
@@ -33,28 +31,4 @@ func (r *menuRepository) InsertMenu(menu model.Menu) error {
 		menu.IsSpicy,
 	)
 	return err
-}
-
-func (r *menuRepository) SelectIsSpicyRatio() ([]model.SpicynessRatio, error) {
-	var isSpicyRatio []model.SpicynessRatio
-	err := r.db.Select(&isSpicyRatio, `
-		SELECT is_spicy as 'Name', COUNT(is_spicy) / (SELECT COUNT(is_spicy) FROM form) * 100 as 'Percent'
-		FROM form
-		GROUP BY(is_spicy);
-	`)
-	if err != nil {
-		return nil, err
-	}
-
-	return isSpicyRatio, nil
-}
-
-func (r *menuRepository) SelectSubmitFormPrice() ([]model.SubmitFormPrice, error) {
-	var submitFormPrice []model.SubmitFormPrice
-	err := r.db.Select(&submitFormPrice, `SELECT price FROM form ORDER BY price DESC;`)
-	if err != nil {
-		return nil, err
-	}
-
-	return submitFormPrice, nil
 }

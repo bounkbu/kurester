@@ -33,19 +33,23 @@ func (server *Server) SetUpRouter() {
 
 	restaurantRepository := repository.NewRestaurantRepository(server.Database)
 	menuRepository := repository.NewMenuRepository(server.Database)
+	ratioRepository := repository.NewRatioRepository(server.Database)
 
 	restaurantService := service.NewRestaurantService(restaurantRepository)
 	menuService := service.NewMenuService(menuRepository)
+	ratioService := service.NewRatioService(ratioRepository)
 
 	restaurantHandler := handler.NewRestaurantHandler(restaurantService)
 	menuHandler := handler.NewMenuHandler(menuService)
 	formHandler := handler.NewFormHandler(menuService, restaurantService)
+	ratioHandler := handler.NewRatioHandler(ratioService)
 
 	server.App.POST("/restarants", restaurantHandler.CreateNewRestaurantHandler)
 	server.App.POST("/menus", menuHandler.CreateNewMenuHandler)
-	server.App.GET("/spicyness/ratio", menuHandler.GetSpicynessRatioHandler)
-	server.App.GET("/price/ratio", menuHandler.GetPriceRatioHandler)
 	server.App.POST("/form", formHandler.SubmitFormHandler)
+	server.App.GET("/ratio/spicyness", ratioHandler.GetSpicynessRatioHandler)
+	server.App.GET("/ratio/price", ratioHandler.GetPriceRatioHandler)
+	server.App.GET("/ratio/type", ratioHandler.GetFoodTypeRatioHandler)
 }
 
 func (server *Server) Start() {
