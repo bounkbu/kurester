@@ -11,7 +11,7 @@ type restaurantService struct {
 }
 
 type RestaurantService interface {
-	CreateNewRestaurant(newRestaurant model.Restaurant) error
+	CreateNewRestaurant(model.Restaurant) error
 }
 
 func NewRestaurantService(restaurantRepository repository.RestaurantRepository) *restaurantService {
