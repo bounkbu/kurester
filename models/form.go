@@ -10,3 +10,7 @@ type Form struct {
 	IsSpicy   bool      `json:"is_spicy"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type SubmitFormPrice struct {
+	Price float64 `db:"price"`
+}
