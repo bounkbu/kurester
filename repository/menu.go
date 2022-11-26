@@ -11,6 +11,7 @@ type menuRepository struct {
 
 type MenuRepository interface {
 	InsertMenu(model.Menu) error
+	SelectIsSpicyRatio() ([]model.Ratio, error)
 }
 
 func NewMenuRepository(db *sqlx.DB) *menuRepository {
@@ -31,4 +32,18 @@ func (r *menuRepository) InsertMenu(menu model.Menu) error {
 		menu.IsSpicy,
 	)
 	return err
+}
+
+func (r *menuRepository) SelectIsSpicyRatio() ([]model.Ratio, error) {
+	var isSpicyRatio []model.Ratio
+	err := r.db.Select(&isSpicyRatio, `
+		SELECT is_spicy as 'Name', COUNT(is_spicy) / (SELECT COUNT(is_spicy) FROM form) * 100 as 'Percent'
+		FROM form
+		GROUP BY(is_spicy);
+	`)
+	if err != nil {
+		return nil, err
+	}
+
+	return isSpicyRatio, nil
 }
