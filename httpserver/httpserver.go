@@ -2,6 +2,7 @@ package httpserver
 
 import (
 	"github.com/BounkBU/kurester/config"
+	"github.com/BounkBU/kurester/handler"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	log "github.com/sirupsen/logrus"
@@ -23,7 +24,13 @@ func NewHTTPServer(config *config.Config, db *sqlx.DB) *Server {
 	}
 }
 
+func (s *Server) SetUpRouter() {
+	s.App.GET("/", handler.HealthCheckHandler)
+}
+
 func (server *Server) Start() {
+	server.SetUpRouter()
+
 	port := server.Config.App.Port
 
 	log.Infof("Server is starting on port : %s", port)
