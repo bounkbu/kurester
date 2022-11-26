@@ -36,13 +36,14 @@ func (server *Server) SetUpRouter() {
 
 	restaurantService := service.NewRestaurantService(restaurantRepository)
 	menuService := service.NewMenuService(menuRepository)
-	// userService := service.NewUserService(restaurantRepository)
 
 	restaurantHandler := handler.NewRestaurantHandler(restaurantService)
 	menuHandler := handler.NewMenuHandler(menuService)
+	formHandler := handler.NewFormHandler(menuService, restaurantService)
 
 	server.App.POST("/restarants", restaurantHandler.CreateNewRestaurantHandler)
 	server.App.POST("/menus", menuHandler.CreateNewMenuHandler)
+	server.App.POST("/form", formHandler.SubmitFormHandler)
 }
 
 func (server *Server) Start() {
