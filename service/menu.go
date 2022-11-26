@@ -12,6 +12,7 @@ type menuService struct {
 
 type MenuService interface {
 	CreateNewMenu(model.Menu) error
+	GetSpicynessRatio() ([]model.Ratio, error)
 }
 
 func NewMenuService(menuRepository repository.MenuRepository) *menuService {
@@ -26,4 +27,31 @@ func (s *menuService) CreateNewMenu(newMenu model.Menu) error {
 
 	err := s.menuRepository.InsertMenu(newMenu)
 	return err
+}
+
+func (s *menuService) GetSpicynessRatio() ([]model.Ratio, error) {
+	log.Info("Start getting spicyness ratio")
+	defer log.Info("End getting spicyness ratio")
+	var spicynessRatios []model.Ratio
+
+	ratios, err := s.menuRepository.SelectIsSpicyRatio()
+	if err != nil {
+		return spicynessRatios, err
+	}
+
+	for _, ratio := range ratios {
+		var ratioName string
+		if ratio.Name == "0" {
+			ratioName = "Not Spicy"
+		} else {
+			ratioName = "Spicy"
+		}
+		spicynessRatio := model.Ratio{
+			Name:    ratioName,
+			Percent: ratio.Percent,
+		}
+		spicynessRatios = append(spicynessRatios, spicynessRatio)
+	}
+
+	return spicynessRatios, nil
 }
