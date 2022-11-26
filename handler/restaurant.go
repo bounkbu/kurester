@@ -46,14 +46,13 @@ func (h *restaurantHandler) GetPopularRestaurant(c *gin.Context) {
 		log.Info("return popular resturants")
 		return
 	} else if errors.Is(err, sql.ErrNoRows) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "Not matching data",
-		})
+		err = errors.New("not matching data")
+		c.JSON(http.StatusNotFound, errorResponse(err))
 		log.Error(err)
 		return
 	}
-	c.JSON(http.StatusInternalServerError, gin.H{
-		"message": "Something went wrong.",
-	})
+
+	err = errors.New("something went wrong")
+	c.JSON(http.StatusInternalServerError, errorResponse(err))
 	log.Error(err)
 }

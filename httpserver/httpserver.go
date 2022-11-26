@@ -44,6 +44,7 @@ func (server *Server) SetUpRouter() {
 	formHandler := handler.NewFormHandler(menuService, restaurantService)
 	ratioHandler := handler.NewRatioHandler(ratioService)
 
+	server.App.GET("/restaurants/popular", restaurantHandler.GetPopularRestaurant)
 	server.App.POST("/restarants", restaurantHandler.CreateNewRestaurantHandler)
 	server.App.POST("/menus", menuHandler.CreateNewMenuHandler)
 	server.App.POST("/form", formHandler.SubmitFormHandler)
