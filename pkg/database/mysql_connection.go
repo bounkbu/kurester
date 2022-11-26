@@ -3,6 +3,7 @@ package database
 import (
 	"github.com/BounkBU/kurester/config"
 	"github.com/BounkBU/kurester/pkg/util"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	log "github.com/sirupsen/logrus"
 )
