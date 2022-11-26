@@ -30,12 +30,13 @@ CREATE TABLE `restaurant_popularity` (
   `popularity` INT
 );
 
-CREATE TABLE `submit_form` (
+CREATE TABLE `form` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `faculty_id` INT,
   `type` varchar(255),
   `price` FLOAT,
-  `is_spicy` BOOLEAN
+  `is_spicy` BOOLEAN,
+  `created_at` TIMESTAMP NOT NULL DEFAULT (now())
 );
 
 INSERT INTO `restaurant` (name, latitude, longitude)
