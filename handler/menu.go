@@ -45,3 +45,13 @@ func (h *menuHandler) GetSpicynessRatioHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, spicynessRatio)
 }
+
+func (h *menuHandler) GetPriceRatioHandler(c *gin.Context) {
+	priceRatio, err := h.menuService.GetPriceRatio()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, priceRatio)
+}
