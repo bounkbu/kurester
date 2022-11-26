@@ -1,6 +1,10 @@
 package model
 
-type Ratio struct {
+type SpicynessRatio struct {
 	Name    string  `json:"name" db:"Name"`
 	Percent float64 `json:"percent" db:"Percent"`
+}
+
+type PriceRatio struct {
+	Results map[string]int `json:"results"`
 }
