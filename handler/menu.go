@@ -35,3 +35,13 @@ func (h *menuHandler) CreateNewMenuHandler(c *gin.Context) {
 	message := "create new menu successfully"
 	c.JSON(http.StatusOK, messageResponse(message))
 }
+
+func (h *menuHandler) GetSpicynessRatioHandler(c *gin.Context) {
+	spicynessRatio, err := h.menuService.GetSpicynessRatio()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, spicynessRatio)
+}
