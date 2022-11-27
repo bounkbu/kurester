@@ -30,7 +30,7 @@ func (h *formHandler) SubmitFormHandler(c *gin.Context) {
 		return
 	}
 
-	nearestRestaurants, err := h.restaurantService.GetNearestRestaurants(req.FacaltyID)
+	nearestRestaurants, err := h.restaurantService.GetNearestRestaurants(req.FacultyID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, errorResponse(err))
 		return

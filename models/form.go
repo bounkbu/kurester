@@ -4,7 +4,7 @@ import "time"
 
 type Form struct {
 	ID        int64     `json:"id"`
-	FacaltyID int64     `json:"facalty_id"`
+	FacultyID int64     `json:"faculty_id"`
 	Type      string    `json:"type"`
 	Price     float64   `json:"price"`
 	IsSpicy   bool      `json:"is_spicy"`

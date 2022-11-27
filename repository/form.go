@@ -24,7 +24,7 @@ func (r *formRepository) InsertForm(form model.Form) error {
 		INSERT INTO form (faculty_id, type, price, is_spicy)
 		VALUES (?, ?, ?, ?)
 	`,
-		form.FacaltyID,
+		form.FacultyID,
 		form.Type,
 		form.Price,
 		form.IsSpicy,
