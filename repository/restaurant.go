@@ -3,7 +3,6 @@ package repository
 import (
 	model "github.com/BounkBU/kurester/models"
 	"github.com/jmoiron/sqlx"
-	"github.com/sirupsen/logrus"
 )
 
 type restaurantRepository struct {
@@ -21,15 +20,8 @@ func NewRestaurantRepository(db *sqlx.DB) *restaurantRepository {
 	}
 }
 
-func (r *restaurantRepository) generateLogger(functionName string) *logrus.Entry {
-	return logrus.WithFields(logrus.Fields{
-		"Module":  "Repository",
-		"Funtion": functionName,
-	})
-}
-
 func (r *restaurantRepository) InsertRestarant(restaurant model.Restaurant) error {
-	logger := r.generateLogger("InsertRestarant")
+	logger := generateLogger("InsertRestarant")
 	_, err := r.db.Query(`
 		INSERT INTO restaurant (name, latitude, longitude)
 		VALUES (?, ?, ?)
@@ -46,7 +38,7 @@ func (r *restaurantRepository) InsertRestarant(restaurant model.Restaurant) erro
 }
 
 func (r *restaurantRepository) QueryPopularRestaurant() ([]model.Restaurant, error) {
-	logger := r.generateLogger("GetPopularRestaurant")
+	logger := generateLogger("GetPopularRestaurant")
 	res := []model.Restaurant{}
 	q := `
 		SELECT *
