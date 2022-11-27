@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	log "github.com/sirupsen/logrus"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Server struct {
@@ -41,7 +43,7 @@ func NewHTTPServer(config *config.Config, db *sqlx.DB) *Server {
 // @host localhost:8888
 func (server *Server) SetUpRouter() {
 	server.App.Use(cors.Default())
-	server.App.GET("/", handler.HealthCheckHandler)
+	server.App.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	restaurantRepository := repository.NewRestaurantRepository(server.Database)
 	menuRepository := repository.NewMenuRepository(server.Database)
@@ -58,6 +60,7 @@ func (server *Server) SetUpRouter() {
 	formHandler := handler.NewFormHandler(menuService, restaurantService, formService)
 	ratioHandler := handler.NewRatioHandler(ratioService)
 
+	server.App.GET("/", handler.HealthCheckHandler)
 	server.App.GET("/restaurants/popular", restaurantHandler.GetPopularRestaurant)
 	server.App.POST("/restaurants/popularity/:restaurantId", restaurantHandler.CreateOrUpdateRestaurantPopularityHandler)
 	server.App.POST("/restarants", restaurantHandler.CreateNewRestaurantHandler)
