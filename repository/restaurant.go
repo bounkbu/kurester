@@ -19,6 +19,7 @@ type RestaurantRepository interface {
 	UpdateRestaurantPopularity(restaurantId int64) error
 	QueryRestaurantPopularity(restaurantId int64) (model.RestaurantPopularity, error)
 	QueryNearestRestaurants(restaurantId int64) ([]model.NearestRestaurant, error)
+	QueryRestaurantById(id int64) (model.Restaurant, error)
 }
 
 func NewRestaurantRepository(db *sqlx.DB) *restaurantRepository {
@@ -140,4 +141,16 @@ func (r *restaurantRepository) QueryNearestRestaurants(restaurantId int64) (near
 
 	logger.Info("Get nearest restaurants")
 	return nearestRestaurants, nil
+}
+
+func (r *restaurantRepository) QueryRestaurantById(id int64) (restaurant model.Restaurant, err error) {
+	logger := r.generateLogger("QueryRestaurantById")
+
+	err = r.db.Get(&restaurant, "SELECT * from restaurant WHERE id=?", id)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	return restaurant, nil
 }
