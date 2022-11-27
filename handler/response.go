@@ -7,6 +7,7 @@ import (
 )
 
 var ErrInvalidRequestData = errors.New("invalid request data")
+var ErrInvalidQueryParam = errors.New("invalid query parameter")
 
 func errorResponse(err error) gin.H {
 	return gin.H{
