@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"strconv"
 
 	model "github.com/BounkBU/kurester/models"
 	"github.com/BounkBU/kurester/service"
@@ -55,4 +56,21 @@ func (h *restaurantHandler) GetPopularRestaurant(c *gin.Context) {
 	err = errors.New("something went wrong")
 	c.JSON(http.StatusInternalServerError, errorResponse(err))
 	log.Error(err)
+}
+
+func (h *restaurantHandler) CreateOrUpdateRestaurantPopularityHandler(c *gin.Context) {
+	restaurantId, err := strconv.ParseInt(c.Param("restaurantId"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, errorResponse(ErrInvalidQueryParam))
+		return
+	}
+
+	err = h.restaurantService.CreateOrUpdateRestaurantPopularity(restaurantId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	response := "Create restaurant popularity successfully"
+	c.JSON(http.StatusOK, messageResponse(response))
 }
