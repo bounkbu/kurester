@@ -2,6 +2,7 @@ package httpserver
 
 import (
 	"github.com/BounkBU/kurester/config"
+	_ "github.com/BounkBU/kurester/docs"
 	"github.com/BounkBU/kurester/handler"
 	"github.com/BounkBU/kurester/repository"
 	"github.com/BounkBU/kurester/service"
