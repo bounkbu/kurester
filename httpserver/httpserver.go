@@ -27,6 +27,18 @@ func NewHTTPServer(config *config.Config, db *sqlx.DB) *Server {
 	}
 }
 
+// @title KU Rester API
+// @version 1.0
+// @description The KU Rester web API
+
+// @contact.name KU Rester Support
+// @contact.email thanathip.suw@gmail.com
+
+// @license.name MIT License
+// @license.url https://choosealicense.com/licenses/mit/
+
+// @schemes http
+// @host localhost:8888
 func (server *Server) SetUpRouter() {
 	server.App.Use(cors.Default())
 	server.App.GET("/", handler.HealthCheckHandler)

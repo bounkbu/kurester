@@ -1,0 +1,24 @@
+host: localhost:8888
+info:
+  contact:
+    email: thanathip.suw@gmail.com
+    name: KU Rester Support
+  description: The KU Rester web API
+  license:
+    name: MIT License
+    url: https://choosealicense.com/licenses/mit/
+  title: KU Rester API
+  version: "1.0"
+paths:
+  /:
+    get:
+      operationId: GetHealthcheck
+      responses:
+        "200":
+          description: OK
+      summary: Healthcheck
+      tags:
+      - healthcheck
+schemes:
+- http
+swagger: "2.0"

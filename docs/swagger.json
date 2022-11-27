@@ -1,0 +1,36 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "The KU Rester web API",
+        "title": "KU Rester API",
+        "contact": {
+            "name": "KU Rester Support",
+            "email": "thanathip.suw@gmail.com"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://choosealicense.com/licenses/mit/"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8888",
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "healthcheck"
+                ],
+                "summary": "Healthcheck",
+                "operationId": "GetHealthcheck",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}
