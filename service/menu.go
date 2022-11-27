@@ -7,16 +7,19 @@ import (
 )
 
 type menuService struct {
-	menuRepository repository.MenuRepository
+	menuRepository       repository.MenuRepository
+	restaurantRepository repository.RestaurantRepository
 }
 
 type MenuService interface {
 	CreateNewMenu(model.Menu) error
+	GetRecommendedMenu(foodType string, spicyNess bool, price float64) (model.RecommendedMenu, error)
 }
 
-func NewMenuService(menuRepository repository.MenuRepository) *menuService {
+func NewMenuService(menuRepository repository.MenuRepository, restaurantRepository repository.RestaurantRepository) *menuService {
 	return &menuService{
-		menuRepository: menuRepository,
+		menuRepository:       menuRepository,
+		restaurantRepository: restaurantRepository,
 	}
 }
 
@@ -26,4 +29,31 @@ func (s *menuService) CreateNewMenu(newMenu model.Menu) error {
 
 	err := s.menuRepository.InsertMenu(newMenu)
 	return err
+}
+
+func (s *menuService) GetRecommendedMenu(foodType string, spicyNess bool, price float64) (recommendedMenu model.RecommendedMenu, err error) {
+	log.Info("Start getting recommended menu")
+	defer log.Info("End getting recommended menu")
+	menu, err := s.menuRepository.QueryRecommendedMenu(foodType, spicyNess, price)
+	if err != nil {
+		return
+	}
+
+	restaurant, err := s.restaurantRepository.QueryRestaurantById(menu.RestaurantId)
+	if err != nil {
+		return
+	}
+
+	recommendedMenu = model.RecommendedMenu{
+		Id:         menu.Id,
+		Restaurant: restaurant,
+		Name:       menu.Name,
+		PictureUrl: menu.PictureUrl,
+		Type:       menu.Type,
+		Price:      menu.Price,
+		IsSpicy:    menu.IsSpicy,
+		CreatedAt:  menu.CreatedAt,
+	}
+
+	return recommendedMenu, nil
 }

@@ -48,7 +48,7 @@ func (r *ratioRepository) SelectSubmitFormPrice() ([]model.SubmitFormPrice, erro
 func (r *ratioRepository) SelectFoodTypeRatio() ([]model.FoodTypeRatio, error) {
 	var foodTypeRatio []model.FoodTypeRatio
 	err := r.db.Select(&foodTypeRatio, `
-		SELECT type as 'Type', COUNT(type) / (SELECT COUNT(type) FROM form) * 100 as 'Percent'
+		SELECT type as 'Type', COUNT(type) as 'Percent'
 		FROM form
 		GROUP BY(type);
 	`)

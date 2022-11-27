@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"time"
 
 	model "github.com/BounkBU/kurester/models"
 	"github.com/BounkBU/kurester/service"
@@ -12,12 +11,14 @@ import (
 type formHandler struct {
 	menuService       service.MenuService
 	restaurantService service.RestaurantService
+	formService       service.FormService
 }
 
-func NewFormHandler(menuService service.MenuService, restaurantService service.RestaurantService) formHandler {
+func NewFormHandler(menuService service.MenuService, restaurantService service.RestaurantService, formService service.FormService) formHandler {
 	return formHandler{
 		menuService:       menuService,
 		restaurantService: restaurantService,
+		formService:       formService,
 	}
 }
 
@@ -29,14 +30,27 @@ func (h *formHandler) SubmitFormHandler(c *gin.Context) {
 		return
 	}
 
-	response := model.Form{
-		ID:        1,
-		FacaltyID: req.FacaltyID,
-		Type:      req.Type,
-		Price:     req.Price,
-		IsSpicy:   req.IsSpicy,
-		CreatedAt: time.Now(),
+	nearestRestaurants, err := h.restaurantService.GetNearestRestaurants(req.FacultyID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
 	}
 
+	recommendedMenu, err := h.menuService.GetRecommendedMenu(req.Type, req.IsSpicy, req.Price)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	err = h.formService.CreateNewForm(req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	response := gin.H{
+		"recommended_menu":    recommendedMenu,
+		"nearest_restaurants": nearestRestaurants,
+	}
 	c.JSON(http.StatusOK, response)
 }
