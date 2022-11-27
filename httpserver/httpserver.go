@@ -37,7 +37,7 @@ func (server *Server) SetUpRouter() {
 	formRepository := repository.NewFormRepository(server.Database)
 
 	restaurantService := service.NewRestaurantService(restaurantRepository)
-	menuService := service.NewMenuService(menuRepository)
+	menuService := service.NewMenuService(menuRepository, restaurantRepository)
 	ratioService := service.NewRatioService(ratioRepository)
 	formService := service.NewFormService(formRepository)
 
