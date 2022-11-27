@@ -28,6 +28,12 @@ func (s *menuService) CreateNewMenu(newMenu model.Menu) error {
 	defer log.Info("End creating new menu")
 
 	err := s.menuRepository.InsertMenu(newMenu)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	log.Info("Create new menu successfully")
 	return err
 }
 
@@ -41,6 +47,7 @@ func (s *menuService) GetRecommendedMenu(foodType string, spicyNess bool, price 
 
 	restaurant, err := s.restaurantRepository.QueryRestaurantById(menu.RestaurantId)
 	if err != nil {
+		log.Error(err)
 		return
 	}
 
@@ -55,5 +62,6 @@ func (s *menuService) GetRecommendedMenu(foodType string, spicyNess bool, price 
 		CreatedAt:  menu.CreatedAt,
 	}
 
+	log.Info("Get restaurant by id successfully")
 	return recommendedMenu, nil
 }

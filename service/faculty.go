@@ -27,6 +27,9 @@ func (f *facultyService) GetAllFaculty() (faculties []model.Faculty, err error) 
 	faculties, err = f.facultyRepository.QueryAllFaculty()
 	if err != nil {
 		log.Error(err)
+		return
 	}
+
+	log.Info("Get all faculty successfully")
 	return
 }

@@ -9,7 +9,6 @@ import (
 	model "github.com/BounkBU/kurester/models"
 	"github.com/BounkBU/kurester/service"
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 )
 
 type restaurantHandler struct {
@@ -42,20 +41,17 @@ func (h *restaurantHandler) CreateNewRestaurantHandler(c *gin.Context) {
 
 func (h *restaurantHandler) GetPopularRestaurant(c *gin.Context) {
 	out, err := h.restaurantService.GetPopularRestaurant()
+
 	if err == nil {
 		c.JSON(http.StatusOK, out)
-		log.Info("return popular resturants")
 		return
 	} else if errors.Is(err, sql.ErrNoRows) {
 		err = errors.New("not matching data")
 		c.JSON(http.StatusNotFound, errorResponse(err))
-		log.Error(err)
 		return
 	}
 
-	err = errors.New("something went wrong")
 	c.JSON(http.StatusInternalServerError, errorResponse(err))
-	log.Error(err)
 }
 
 func (h *restaurantHandler) CreateOrUpdateRestaurantPopularityHandler(c *gin.Context) {

@@ -29,6 +29,7 @@ func NewRestaurantRepository(db *sqlx.DB) *restaurantRepository {
 
 func (r *restaurantRepository) InsertRestarant(restaurant model.Restaurant) error {
 	logger := generateLogger("InsertRestarant")
+
 	_, err := r.db.Query(`
 		INSERT INTO restaurant (name, latitude, longitude)
 		VALUES (?, ?, ?)
@@ -49,6 +50,7 @@ func (r *restaurantRepository) InsertRestarant(restaurant model.Restaurant) erro
 
 func (r *restaurantRepository) QueryPopularRestaurant() ([]model.Restaurant, error) {
 	logger := generateLogger("GetPopularRestaurant")
+
 	res := []model.Restaurant{}
 	q := `
 		SELECT restaurant.id, restaurant.name, restaurant.latitude, restaurant.longitude
@@ -70,7 +72,7 @@ func (r *restaurantRepository) QueryPopularRestaurant() ([]model.Restaurant, err
 }
 
 func (r *restaurantRepository) InsertRestaurantPopularity(restaurantId int64) error {
-	logger := r.generateLogger("InsertRestaurantPopularity")
+	logger := generateLogger("InsertRestaurantPopularity")
 
 	_, err := r.db.Query(`
 		INSERT INTO restaurant_popularity (restaurant_id)
@@ -88,7 +90,7 @@ func (r *restaurantRepository) InsertRestaurantPopularity(restaurantId int64) er
 }
 
 func (r *restaurantRepository) UpdateRestaurantPopularity(restaurantId int64) error {
-	logger := r.generateLogger("UpdateRestaurantPopularity")
+	logger := generateLogger("UpdateRestaurantPopularity")
 
 	_, err := r.db.Query("UPDATE restaurant_popularity SET popularity = popularity + 1 WHERE restaurant_id=?", restaurantId)
 	if err != nil {
@@ -101,7 +103,7 @@ func (r *restaurantRepository) UpdateRestaurantPopularity(restaurantId int64) er
 }
 
 func (r *restaurantRepository) QueryRestaurantPopularity(restaurantId int64) (restaurantPopularity model.RestaurantPopularity, err error) {
-	logger := r.generateLogger("QueryRestaurantPopularity")
+	logger := generateLogger("QueryRestaurantPopularity")
 
 	err = r.db.Get(&restaurantPopularity, "SELECT * from restaurant_popularity WHERE restaurant_id=?", restaurantId)
 	if err != nil {
@@ -113,7 +115,7 @@ func (r *restaurantRepository) QueryRestaurantPopularity(restaurantId int64) (re
 }
 
 func (r *restaurantRepository) QueryNearestRestaurants(restaurantId int64) (nearestRestaurants []model.NearestRestaurant, err error) {
-	logger := r.generateLogger("QueryNearestRestaurants")
+	logger := generateLogger("QueryNearestRestaurants")
 
 	q := fmt.Sprintf(`
 		SELECT id, name, SQRT(
@@ -136,7 +138,7 @@ func (r *restaurantRepository) QueryNearestRestaurants(restaurantId int64) (near
 }
 
 func (r *restaurantRepository) QueryRestaurantById(id int64) (restaurant model.Restaurant, err error) {
-	logger := r.generateLogger("QueryRestaurantById")
+	logger := generateLogger("QueryRestaurantById")
 
 	err = r.db.Get(&restaurant, "SELECT * from restaurant WHERE id=?", id)
 	if err != nil {
@@ -144,5 +146,6 @@ func (r *restaurantRepository) QueryRestaurantById(id int64) (restaurant model.R
 		return
 	}
 
+	logger.Info("Get restaurant by id")
 	return restaurant, nil
 }

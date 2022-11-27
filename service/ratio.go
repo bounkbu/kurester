@@ -28,8 +28,9 @@ func (s *ratioService) GetSpicynessRatio() ([]model.SpicynessRatio, error) {
 	defer log.Info("End getting spicyness ratio")
 	var spicynessRatios []model.SpicynessRatio
 
-	ratios, err := s.ratioRepository.SelectIsSpicyRatio()
+	ratios, err := s.ratioRepository.QueryIsSpicyRatio()
 	if err != nil {
+		log.Error(err)
 		return spicynessRatios, err
 	}
 
@@ -47,6 +48,7 @@ func (s *ratioService) GetSpicynessRatio() ([]model.SpicynessRatio, error) {
 		spicynessRatios = append(spicynessRatios, spicynessRatio)
 	}
 
+	log.Info("Get spicyness ratio successfully")
 	return spicynessRatios, nil
 }
 
@@ -55,8 +57,9 @@ func (s *ratioService) GetPriceRatio() (model.PriceRatio, error) {
 	defer log.Info("End getting price ratio")
 
 	results := make(map[string]int)
-	formPrice, err := s.ratioRepository.SelectSubmitFormPrice()
+	formPrice, err := s.ratioRepository.QuerySubmitFormPrice()
 	if err != nil {
+		log.Error(err)
 		return model.PriceRatio{}, err
 	}
 
@@ -69,6 +72,7 @@ func (s *ratioService) GetPriceRatio() (model.PriceRatio, error) {
 		Results: results,
 	}
 
+	log.Info("Get price ratio successfully")
 	return priceRatio, nil
 }
 
@@ -76,10 +80,12 @@ func (s *ratioService) GetFoodTypeRatio() ([]model.FoodTypeRatio, error) {
 	log.Info("Start getting spicyness ratio")
 	defer log.Info("End getting spicyness ratio")
 
-	foodTypeRatio, err := s.ratioRepository.SelectFoodTypeRatio()
+	foodTypeRatio, err := s.ratioRepository.QueryFoodTypeRatio()
 	if err != nil {
+		log.Error(err)
 		return foodTypeRatio, err
 	}
 
+	log.Info("Get food type ratio successfully")
 	return foodTypeRatio, nil
 }

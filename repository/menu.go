@@ -2,10 +2,11 @@ package repository
 
 import (
 	"errors"
+	"math/rand"
+	"time"
 
 	model "github.com/BounkBU/kurester/models"
 	"github.com/jmoiron/sqlx"
-	log "github.com/sirupsen/logrus"
 )
 
 type menuRepository struct {
@@ -27,6 +28,8 @@ var ErrFoundMoreThanOne error = errors.New("found more than one row in db")
 var ErrNotFound error = errors.New("not found in db")
 
 func (r *menuRepository) InsertMenu(menu model.Menu) error {
+	logger := generateLogger("InsertMenu")
+
 	_, err := r.db.Query(`
 		INSERT INTO menu (restaurant_id, name, type, price, is_spicy)
 		VALUES (?, ?, ?, ?, ?)
@@ -37,31 +40,39 @@ func (r *menuRepository) InsertMenu(menu model.Menu) error {
 		menu.Price,
 		menu.IsSpicy,
 	)
-	return err
+	if err != nil {
+		logger.Error(err)
+		return err
+	}
+
+	logger.Info("Insert new menu")
+	return nil
 }
 
 func (r *menuRepository) QueryRecommendedMenu(foodType string, spicyNess bool, price float64) (recommendedMenu model.Menu, err error) {
+	logger := generateLogger("QueryRecommendedMenu")
+
 	var menus []model.Menu
 	err = r.db.Select(&menus, `
 		SELECT *
 		FROM menu
 		WHERE type = ?
 		AND is_spicy = ?
-		HAVING price <= ?
-		LIMIT 1;
+		HAVING price <= ?;
 	`, foodType, spicyNess, price)
-	log.Info(menus)
 	if err != nil {
-		log.Error(err)
+		logger.Error(err)
 		return recommendedMenu, err
 	}
 
 	menuLength := len(menus)
 	if menuLength == 0 {
+		logger.Error(ErrNotFound)
 		return recommendedMenu, ErrNotFound
-	} else if menuLength > 1 {
-		return recommendedMenu, ErrFoundMoreThanOne
 	}
 
-	return menus[0], nil
+	rand.Seed(time.Now().Unix())
+	n := rand.Int() % menuLength
+
+	return menus[n], nil
 }

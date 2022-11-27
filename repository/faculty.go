@@ -21,6 +21,7 @@ func NewFacultyRepository(db *sqlx.DB) *facultyRepository {
 
 func (f *facultyRepository) QueryAllFaculty() (res []model.Faculty, err error) {
 	logger := generateLogger("QueryAllFaculty")
+
 	q := `
 		SELECT id, name
 		FROM faculty
@@ -30,6 +31,7 @@ func (f *facultyRepository) QueryAllFaculty() (res []model.Faculty, err error) {
 		logger.Error(err)
 		return res, err
 	}
-	logger.Info("Get popular restaurant")
+
+	logger.Info("Get all faculty")
 	return res, nil
 }

@@ -25,5 +25,11 @@ func (s *formService) CreateNewForm(newForm model.Form) error {
 	defer log.Info("End creating new form")
 
 	err := s.formRepository.InsertForm(newForm)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	log.Info("Create new form successfully")
 	return err
 }

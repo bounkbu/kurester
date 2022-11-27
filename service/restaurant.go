@@ -31,7 +31,13 @@ func (s *restaurantService) CreateNewRestaurant(newRestaurant model.Restaurant) 
 	defer log.Info("End creating new restaurant")
 
 	err := s.restaurantRepository.InsertRestarant(newRestaurant)
-	return err
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	log.Info("Create restaurant successfully")
+	return nil
 }
 
 func (s *restaurantService) GetPopularRestaurant() (restaurants []model.Restaurant, err error) {
@@ -44,6 +50,7 @@ func (s *restaurantService) GetPopularRestaurant() (restaurants []model.Restaura
 		return
 	}
 
+	log.Info("Get popular restaurants successfully")
 	return restaurants, nil
 }
 
@@ -77,5 +84,6 @@ func (s *restaurantService) GetNearestRestaurants(facultyId int64) (restaurants 
 		return restaurants, err
 	}
 
+	log.Info("Get nearest restaurants successfully")
 	return restaurants, nil
 }
