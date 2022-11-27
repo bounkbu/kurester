@@ -22,6 +22,7 @@ type CreateOrUpdateRestaurantPopularityRequest struct {
 }
 
 type NearestRestaurant struct {
+	ID       int64   `json:"id" db:"id"`
 	Name     string  `json:"name" db:"name"`
 	Distance float64 `json:"distance" db:"distance"`
 }

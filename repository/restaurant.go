@@ -123,7 +123,7 @@ func (r *restaurantRepository) QueryNearestRestaurants(restaurantId int64) (near
 	logger := r.generateLogger("QueryNearestRestaurants")
 
 	q := fmt.Sprintf(`
-		SELECT name, SQRT(
+		SELECT id, name, SQRT(
 			POW(69.1 * (latitude - (SELECT latitude FROM faculty WHERE id = %d)), 2) +
 			POW(69.1 * ((SELECT longitude FROM faculty WHERE id = %d) - longitude) * COS(latitude / 57.3), 2)) AS distance
 		FROM restaurant
