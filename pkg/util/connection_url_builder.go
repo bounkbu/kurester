@@ -21,7 +21,7 @@ func NewConnectionUrlBuilder(stuff string, db config.Database) string {
 		)
 	case "dns":
 		url = fmt.Sprintf(
-			"%s:%s@tcp(%s)/%s?tls=true",
+			"%s:%s@tcp(%s)/%s?tls=true&parseTime=true",
 			db.Username,
 			db.Password,
 			db.Hostname,
