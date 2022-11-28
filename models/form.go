@@ -14,3 +14,8 @@ type Form struct {
 type SubmitFormPrice struct {
 	Price float64 `db:"price"`
 }
+
+type SubmitFormResponse struct {
+	RecommendedMenu   RecommendedMenu     `json:"recommended_menu"`
+	NearestRestaurant []NearestRestaurant `json:"nearest_restaurant"`
+}

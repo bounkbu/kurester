@@ -22,6 +22,14 @@ func NewFormHandler(menuService service.MenuService, restaurantService service.R
 	}
 }
 
+// SubmitForm godoc
+// @summary Create form, analyze the appropriate menu from request and find nearest restaurants
+// @tags Form
+// @id SubmitForm
+// @Success 200 {object} model.SubmitFormResponse
+// @Failure 400
+// @Failure 500
+// @Router /form [post]
 func (h *formHandler) SubmitFormHandler(c *gin.Context) {
 	var req model.Form
 
@@ -48,9 +56,9 @@ func (h *formHandler) SubmitFormHandler(c *gin.Context) {
 		return
 	}
 
-	response := gin.H{
-		"recommended_menu":    recommendedMenu,
-		"nearest_restaurants": nearestRestaurants,
+	response := model.SubmitFormResponse{
+		RecommendedMenu:   recommendedMenu,
+		NearestRestaurant: nearestRestaurants,
 	}
 	c.JSON(http.StatusOK, response)
 }

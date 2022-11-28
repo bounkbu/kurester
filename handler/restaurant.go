@@ -21,6 +21,14 @@ func NewRestaurantHandler(restaurantService service.RestaurantService) restauran
 	}
 }
 
+// CreateNewRestaurant godoc
+// @summary Create new restaurant
+// @tags Restaurant
+// @id CreateNewRestaurant
+// @Success 200 {object} model.MessageResponse
+// @Failure 400
+// @Failure 500
+// @Router /restaurants [post]
 func (h *restaurantHandler) CreateNewRestaurantHandler(c *gin.Context) {
 	var req model.Restaurant
 
@@ -39,6 +47,14 @@ func (h *restaurantHandler) CreateNewRestaurantHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, messageResponse(message))
 }
 
+// GetPopularRestaurant godoc
+// @summary Get popular restaurants
+// @tags Restaurant
+// @id GetPopularRestaurant
+// @Success 200 {array} model.Restaurant
+// @Failure 404
+// @Failure 500
+// @Router /restaurants/popular [get]
 func (h *restaurantHandler) GetPopularRestaurant(c *gin.Context) {
 	out, err := h.restaurantService.GetPopularRestaurant()
 
@@ -54,6 +70,14 @@ func (h *restaurantHandler) GetPopularRestaurant(c *gin.Context) {
 	c.JSON(http.StatusInternalServerError, errorResponse(err))
 }
 
+// CreateOrUpdateRestaurantPopularity godoc
+// @summary Create new restaurant popularity, or update popularity if restaurant exists
+// @tags Restaurant
+// @id CreateOrUpdateRestaurantPopularity
+// @Success 200 {object} model.MessageResponse
+// @Failure 400
+// @Failure 500
+// @Router /restaurants/popularity/{restaurantId} [post]
 func (h *restaurantHandler) CreateOrUpdateRestaurantPopularityHandler(c *gin.Context) {
 	restaurantId, err := strconv.ParseInt(c.Param("restaurantId"), 10, 64)
 	if err != nil {

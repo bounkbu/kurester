@@ -1,0 +1,324 @@
+definitions:
+  model.Faculty:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.FoodTypeRatio:
+    properties:
+      percent:
+        type: number
+      type:
+        type: string
+    type: object
+  model.Menu:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_spicy:
+        type: boolean
+      name:
+        type: string
+      picture_url:
+        type: string
+      price:
+        type: number
+      restaurant_id:
+        type: integer
+      type:
+        type: string
+    type: object
+  model.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  model.NearestRestaurant:
+    properties:
+      distance:
+        type: number
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.PopularityFromAverageMenuPrice:
+    properties:
+      average_price:
+        type: number
+      popularity:
+        type: integer
+      restaurant_name:
+        type: string
+    type: object
+  model.PriceRatio:
+    properties:
+      results:
+        additionalProperties:
+          type: integer
+        type: object
+    type: object
+  model.RecommendedMenu:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_spicy:
+        type: boolean
+      name:
+        type: string
+      picture_url:
+        type: string
+      price:
+        type: number
+      restaurant:
+        $ref: '#/definitions/model.Restaurant'
+      type:
+        type: string
+    type: object
+  model.Restaurant:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      latitude:
+        type: number
+      longitude:
+        type: number
+      name:
+        type: string
+    type: object
+  model.SpicynessRatio:
+    properties:
+      name:
+        type: string
+      percent:
+        type: number
+    type: object
+  model.SubmitFormResponse:
+    properties:
+      nearest_restaurant:
+        items:
+          $ref: '#/definitions/model.NearestRestaurant'
+        type: array
+      recommended_menu:
+        $ref: '#/definitions/model.RecommendedMenu'
+    type: object
+host: kurester.herokuapp.com
+info:
+  contact:
+    email: thanathip.suw@gmail.com
+    name: KU Rester Support
+  description: The KU Rester web API
+  license:
+    name: MIT License
+    url: https://choosealicense.com/licenses/mit/
+  title: KU Rester API
+  version: "1.0"
+paths:
+  /:
+    get:
+      operationId: GetHealthcheck
+      responses:
+        "200":
+          description: OK
+      summary: Healthcheck
+      tags:
+      - healthcheck
+  /faculties:
+    get:
+      operationId: GetAllFaculty
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Faculty'
+            type: array
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Get all faculties
+      tags:
+      - Faculty
+  /form:
+    post:
+      operationId: SubmitForm
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.SubmitFormResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create form, analyze the appropriate menu from request and find nearest
+        restaurants
+      tags:
+      - Form
+  /menus:
+    post:
+      operationId: CreateNewMenu
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.MessageResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create new menu
+      tags:
+      - Menu
+  /menus/type:
+    get:
+      operationId: GetAllFoodType
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Menu'
+            type: array
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get all the types of food
+      tags:
+      - Menu
+  /ratio/popularity:
+    get:
+      operationId: GetPopularityFromAverageMenuPrice
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PopularityFromAverageMenuPrice'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get the popularity compare with average menu price
+      tags:
+      - Visualization
+  /ratio/popularity/average:
+    get:
+      operationId: GetAveragePopularityFromPriceRange
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PriceRatio'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get the average popularity compare with range of menu price
+      tags:
+      - Visualization
+  /ratio/price:
+    get:
+      operationId: GetPriceRatio
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PriceRatio'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get the price ratio
+      tags:
+      - Visualization
+  /ratio/spicyness:
+    get:
+      operationId: GetSpicynessRatio
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.SpicynessRatio'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get the spicyness ratio
+      tags:
+      - Visualization
+  /ratio/type:
+    get:
+      operationId: GetFoodTypeRatio
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.FoodTypeRatio'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get the type of food ratio
+      tags:
+      - Visualization
+  /restaurants:
+    post:
+      operationId: CreateNewRestaurant
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.MessageResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create new restaurant
+      tags:
+      - Restaurant
+  /restaurants/popular:
+    get:
+      operationId: GetPopularRestaurant
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Restaurant'
+            type: array
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Get popular restaurants
+      tags:
+      - Restaurant
+  /restaurants/popularity/{restaurantId}:
+    post:
+      operationId: CreateOrUpdateRestaurantPopularity
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.MessageResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create new restaurant popularity, or update popularity if restaurant
+        exists
+      tags:
+      - Restaurant
+schemes:
+- https
+swagger: "2.0"

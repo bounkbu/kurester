@@ -2,6 +2,7 @@ package httpserver
 
 import (
 	"github.com/BounkBU/kurester/config"
+	_ "github.com/BounkBU/kurester/docs"
 	"github.com/BounkBU/kurester/handler"
 	"github.com/BounkBU/kurester/repository"
 	"github.com/BounkBU/kurester/service"
@@ -9,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	log "github.com/sirupsen/logrus"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Server struct {
@@ -27,9 +30,21 @@ func NewHTTPServer(config *config.Config, db *sqlx.DB) *Server {
 	}
 }
 
+// @title KU Rester API
+// @version 1.0
+// @description The KU Rester web API
+
+// @contact.name KU Rester Support
+// @contact.email thanathip.suw@gmail.com
+
+// @license.name MIT License
+// @license.url https://choosealicense.com/licenses/mit/
+
+// @schemes https
+// @host kurester.herokuapp.com
 func (server *Server) SetUpRouter() {
 	server.App.Use(cors.Default())
-	server.App.GET("/", handler.HealthCheckHandler)
+	server.App.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	restaurantRepository := repository.NewRestaurantRepository(server.Database)
 	menuRepository := repository.NewMenuRepository(server.Database)
@@ -49,6 +64,7 @@ func (server *Server) SetUpRouter() {
 	ratioHandler := handler.NewRatioHandler(ratioService)
 	facultyHandler := handler.NewFacultyHandler(facultyService)
 
+	server.App.GET("/", handler.HealthCheckHandler)
 	server.App.GET("/faculties", facultyHandler.GetAllFaculty)
 	server.App.GET("/restaurants/popular", restaurantHandler.GetPopularRestaurant)
 	server.App.POST("/restaurants/popularity/:restaurantId", restaurantHandler.CreateOrUpdateRestaurantPopularityHandler)
