@@ -64,5 +64,5 @@ func (h *ratioHandler) GetAveragePopularityFromPriceRange(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, averagePopularity.Results)
+	c.JSON(http.StatusOK, averagePopularity)
 }
