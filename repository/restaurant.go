@@ -76,7 +76,7 @@ func (r *restaurantRepository) InsertRestaurantPopularity(restaurantId int64) er
 
 	_, err := r.db.Query(`
 		INSERT INTO restaurant_popularity (restaurant_id)
-		VALUES (?, ?, ?)
+		VALUES (?)
 	`,
 		restaurantId,
 	)
