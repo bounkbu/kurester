@@ -16,6 +16,7 @@ type menuRepository struct {
 type MenuRepository interface {
 	InsertMenu(model.Menu) error
 	QueryRecommendedMenu(foodType string, spicyNess bool, price float64) (model.Menu, error)
+	QueryAllFoodType() ([]model.Menu, error)
 }
 
 func NewMenuRepository(db *sqlx.DB) *menuRepository {
@@ -75,4 +76,21 @@ func (r *menuRepository) QueryRecommendedMenu(foodType string, spicyNess bool, p
 	n := rand.Int() % menuLength
 
 	return menus[n], nil
+}
+
+func (r *menuRepository) QueryAllFoodType() (foodTypes []model.Menu, err error) {
+	logger := generateLogger("QueryAllFoodType")
+
+	q := `
+		SELECT DISTINCT type
+		FROM menu;
+	`
+	err = r.db.Select(&foodTypes, q)
+	if err != nil {
+		logger.Error(err)
+		return foodTypes, err
+	}
+
+	logger.Info("Get all food type")
+	return foodTypes, nil
 }
