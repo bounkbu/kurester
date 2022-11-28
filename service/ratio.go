@@ -15,6 +15,8 @@ type RatioService interface {
 	GetSpicynessRatio() ([]model.SpicynessRatio, error)
 	GetPriceRatio() (model.PriceRatio, error)
 	GetFoodTypeRatio() ([]model.FoodTypeRatio, error)
+	GetPopularityFromAverageMenuPrice() ([]model.PopularityFromAverageMenuPrice, error)
+	GetAveragePopularityFromPriceRange() (model.PriceRatio, error)
 }
 
 func NewRatioService(ratioRepository repository.RatioRepository) *ratioService {
@@ -88,4 +90,43 @@ func (s *ratioService) GetFoodTypeRatio() ([]model.FoodTypeRatio, error) {
 
 	log.Info("Get food type ratio successfully")
 	return foodTypeRatio, nil
+}
+
+func (s *ratioService) GetPopularityFromAverageMenuPrice() ([]model.PopularityFromAverageMenuPrice, error) {
+	log.Info("Start getting popularity from average menu price ratio")
+	defer log.Info("End getting popularity from average menu price ratio")
+
+	popularity, err := s.ratioRepository.QueryPopularityFromAverageMenuPrice()
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+
+	log.Info("Get popularity from average menu price ratio successfully")
+	return popularity, nil
+}
+
+func (s *ratioService) GetAveragePopularityFromPriceRange() (model.PriceRatio, error) {
+	log.Info("Start getting average popularity from price range ratio")
+	defer log.Info("End getting average popularity from price range ratio")
+
+	results := make(map[string]int)
+
+	averagePopularity, err := s.ratioRepository.QueryAveragePopularityFromPrice()
+	if err != nil {
+		log.Error(err)
+		return model.PriceRatio{}, err
+	}
+
+	for _, v := range averagePopularity {
+		priceRange := util.PriceCountingHelper(v.Price)
+		results[priceRange] += 1
+	}
+
+	priceRatio := model.PriceRatio{
+		Results: results,
+	}
+
+	log.Info("Get popularity from average menu price ratio successfully")
+	return priceRatio, nil
 }
