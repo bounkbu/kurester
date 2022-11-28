@@ -18,6 +18,14 @@ func NewMenuHandler(menuService service.MenuService) menuHandler {
 	}
 }
 
+// CreateNewMenu godoc
+// @summary Create new menu
+// @tags Menu
+// @id CreateNewMenu
+// @Success 200 {object} model.MessageResponse
+// @Failure 400
+// @Failure 500
+// @Router /menus [post]
 func (h *menuHandler) CreateNewMenuHandler(c *gin.Context) {
 	var req model.Menu
 
@@ -36,6 +44,14 @@ func (h *menuHandler) CreateNewMenuHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, messageResponse(message))
 }
 
+// GetAllFoodType godoc
+// @summary Get all the types of food
+// @tags Menu
+// @id GetAllFoodType
+// @Success 200 {array} model.Menu
+// @Failure 400
+// @Failure 500
+// @Router /menus/type [get]
 func (h *menuHandler) GetAllFoodType(c *gin.Context) {
 	foodTypes, err := h.menuService.GetAllFoodType()
 	if err != nil {

@@ -31,6 +31,465 @@
                     }
                 }
             }
+        },
+        "/faculties": {
+            "get": {
+                "tags": [
+                    "Faculty"
+                ],
+                "summary": "Get all faculties",
+                "operationId": "GetAllFaculty",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Faculty"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/form": {
+            "post": {
+                "tags": [
+                    "Form"
+                ],
+                "summary": "Create form, analyze the appropriate menu from request and find nearest restaurants",
+                "operationId": "SubmitForm",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.SubmitFormResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/menus": {
+            "post": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Create new menu",
+                "operationId": "CreateNewMenu",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.MessageResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/menus/type": {
+            "get": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Get all the types of food",
+                "operationId": "GetAllFoodType",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Menu"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ratio/popularity": {
+            "get": {
+                "tags": [
+                    "Visualization"
+                ],
+                "summary": "Get the popularity compare with average menu price",
+                "operationId": "GetPopularityFromAverageMenuPrice",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.PopularityFromAverageMenuPrice"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ratio/popularity/average": {
+            "get": {
+                "tags": [
+                    "Visualization"
+                ],
+                "summary": "Get the average popularity compare with range of menu price",
+                "operationId": "GetAveragePopularityFromPriceRange",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.PriceRatio"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ratio/price": {
+            "get": {
+                "tags": [
+                    "Visualization"
+                ],
+                "summary": "Get the price ratio",
+                "operationId": "GetPriceRatio",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.PriceRatio"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ratio/spicyness": {
+            "get": {
+                "tags": [
+                    "Visualization"
+                ],
+                "summary": "Get the spicyness ratio",
+                "operationId": "GetSpicynessRatio",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.SpicynessRatio"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ratio/type": {
+            "get": {
+                "tags": [
+                    "Visualization"
+                ],
+                "summary": "Get the type of food ratio",
+                "operationId": "GetFoodTypeRatio",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.FoodTypeRatio"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/restaurants": {
+            "post": {
+                "tags": [
+                    "Restaurant"
+                ],
+                "summary": "Create new restaurant",
+                "operationId": "CreateNewRestaurant",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.MessageResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/restaurants/popular": {
+            "get": {
+                "tags": [
+                    "Restaurant"
+                ],
+                "summary": "Get popular restaurants",
+                "operationId": "GetPopularRestaurant",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Restaurant"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/restaurants/popularity/{restaurantId}": {
+            "post": {
+                "tags": [
+                    "Restaurant"
+                ],
+                "summary": "Create new restaurant popularity, or update popularity if restaurant exists",
+                "operationId": "CreateOrUpdateRestaurantPopularity",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.MessageResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.Faculty": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.FoodTypeRatio": {
+            "type": "object",
+            "properties": {
+                "percent": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Menu": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_spicy": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "picture_url": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "restaurant_id": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.MessageResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.NearestRestaurant": {
+            "type": "object",
+            "properties": {
+                "distance": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PopularityFromAverageMenuPrice": {
+            "type": "object",
+            "properties": {
+                "average_price": {
+                    "type": "number"
+                },
+                "popularity": {
+                    "type": "integer"
+                },
+                "restaurant_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PriceRatio": {
+            "type": "object",
+            "properties": {
+                "results": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "model.RecommendedMenu": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_spicy": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "picture_url": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "restaurant": {
+                    "$ref": "#/definitions/model.Restaurant"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Restaurant": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SpicynessRatio": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "percent": {
+                    "type": "number"
+                }
+            }
+        },
+        "model.SubmitFormResponse": {
+            "type": "object",
+            "properties": {
+                "nearest_restaurant": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.NearestRestaurant"
+                    }
+                },
+                "recommended_menu": {
+                    "$ref": "#/definitions/model.RecommendedMenu"
+                }
+            }
         }
     }
 }

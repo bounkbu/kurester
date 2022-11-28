@@ -3,6 +3,7 @@ package handler
 import (
 	"errors"
 
+	model "github.com/BounkBU/kurester/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,8 +16,8 @@ func errorResponse(err error) gin.H {
 	}
 }
 
-func messageResponse(meesage string) gin.H {
-	return gin.H{
-		"message": meesage,
+func messageResponse(meesage string) model.MessageResponse {
+	return model.MessageResponse{
+		Message: meesage,
 	}
 }
