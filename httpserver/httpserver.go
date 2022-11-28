@@ -59,6 +59,8 @@ func (server *Server) SetUpRouter() {
 	server.App.GET("/ratio/spicyness", ratioHandler.GetSpicynessRatioHandler)
 	server.App.GET("/ratio/price", ratioHandler.GetPriceRatioHandler)
 	server.App.GET("/ratio/type", ratioHandler.GetFoodTypeRatioHandler)
+	server.App.GET("/ratio/popularity", ratioHandler.GetPopularityFromAverageMenuPrice)
+	server.App.GET("/ratio/popularity/average", ratioHandler.GetAveragePopularityFromPriceRange)
 }
 
 func (server *Server) Start() {
