@@ -27,7 +27,7 @@ CREATE TABLE `faculty` (
 CREATE TABLE `restaurant_popularity` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `restaurant_id` INT,
-  `popularity` INT
+  `popularity` INT DEFAULT 1
 );
 
 CREATE TABLE `form` (
