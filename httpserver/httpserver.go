@@ -35,25 +35,32 @@ func (server *Server) SetUpRouter() {
 	menuRepository := repository.NewMenuRepository(server.Database)
 	ratioRepository := repository.NewRatioRepository(server.Database)
 	formRepository := repository.NewFormRepository(server.Database)
+	facultyRepository := repository.NewFacultyRepository(server.Database)
 
 	restaurantService := service.NewRestaurantService(restaurantRepository)
 	menuService := service.NewMenuService(menuRepository, restaurantRepository)
 	ratioService := service.NewRatioService(ratioRepository)
 	formService := service.NewFormService(formRepository)
+	facultyService := service.NewFacultyService(facultyRepository)
 
 	restaurantHandler := handler.NewRestaurantHandler(restaurantService)
 	menuHandler := handler.NewMenuHandler(menuService)
 	formHandler := handler.NewFormHandler(menuService, restaurantService, formService)
 	ratioHandler := handler.NewRatioHandler(ratioService)
+	facultyHandler := handler.NewFacultyHandler(facultyService)
 
+	server.App.GET("/faculties", facultyHandler.GetAllFaculty)
 	server.App.GET("/restaurants/popular", restaurantHandler.GetPopularRestaurant)
 	server.App.POST("/restaurants/popularity/:restaurantId", restaurantHandler.CreateOrUpdateRestaurantPopularityHandler)
 	server.App.POST("/restarants", restaurantHandler.CreateNewRestaurantHandler)
 	server.App.POST("/menus", menuHandler.CreateNewMenuHandler)
+	server.App.GET("/menus/type", menuHandler.GetAllFoodType)
 	server.App.POST("/form", formHandler.SubmitFormHandler)
 	server.App.GET("/ratio/spicyness", ratioHandler.GetSpicynessRatioHandler)
 	server.App.GET("/ratio/price", ratioHandler.GetPriceRatioHandler)
 	server.App.GET("/ratio/type", ratioHandler.GetFoodTypeRatioHandler)
+	server.App.GET("/ratio/popularity", ratioHandler.GetPopularityFromAverageMenuPrice)
+	server.App.GET("/ratio/popularity/average", ratioHandler.GetAveragePopularityFromPriceRange)
 }
 
 func (server *Server) Start() {

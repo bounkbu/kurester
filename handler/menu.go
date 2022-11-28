@@ -35,3 +35,13 @@ func (h *menuHandler) CreateNewMenuHandler(c *gin.Context) {
 	message := "create new menu successfully"
 	c.JSON(http.StatusOK, messageResponse(message))
 }
+
+func (h *menuHandler) GetAllFoodType(c *gin.Context) {
+	foodTypes, err := h.menuService.GetAllFoodType()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, foodTypes)
+}

@@ -34,7 +34,7 @@ func (h *ratioHandler) GetPriceRatioHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, priceRatio)
+	c.JSON(http.StatusOK, priceRatio.Results)
 }
 
 func (h *ratioHandler) GetFoodTypeRatioHandler(c *gin.Context) {
@@ -45,4 +45,24 @@ func (h *ratioHandler) GetFoodTypeRatioHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, foodTypeRatio)
+}
+
+func (h *ratioHandler) GetPopularityFromAverageMenuPrice(c *gin.Context) {
+	popularity, err := h.ratioService.GetPopularityFromAverageMenuPrice()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, popularity)
+}
+
+func (h *ratioHandler) GetAveragePopularityFromPriceRange(c *gin.Context) {
+	averagePopularity, err := h.ratioService.GetAveragePopularityFromPriceRange()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, averagePopularity)
 }

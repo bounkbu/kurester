@@ -60,18 +60,27 @@ func (s *restaurantService) CreateOrUpdateRestaurantPopularity(restaurantId int6
 
 	restaurantPopularity, err := s.restaurantRepository.QueryRestaurantPopularity(restaurantId)
 	if err != nil && !errors.Is(err, sql.ErrNoRows) {
-		log.Errorf("Error select search movie by tmdb_movie_id: %s", err.Error())
+		log.Errorf("Error select restaurant popularity by id: %s", err.Error())
 		return err
 	}
 
 	if errors.Is(err, sql.ErrNoRows) {
-		err = s.restaurantRepository.InsertRestaurantPopularity(restaurantPopularity.RestaurantID)
-		log.Errorf("Error insert search: %s", err.Error())
-		return err
+		err = s.restaurantRepository.InsertRestaurantPopularity(restaurantId)
+		if err != nil {
+			log.Errorf("Error insert search: %s", err.Error())
+			return err
+		}
+		log.Info("Create new restaurant popularity successfully")
+		return nil
 	}
 
 	err = s.restaurantRepository.UpdateRestaurantPopularity(restaurantPopularity.RestaurantID)
-	return err
+	if err != nil {
+		log.Errorf("Error update search: %s", err.Error())
+		return err
+	}
+	log.Info("Update restaurant popularity successfully")
+	return nil
 }
 
 func (s *restaurantService) GetNearestRestaurants(facultyId int64) (restaurants []model.NearestRestaurant, err error) {

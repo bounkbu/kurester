@@ -14,6 +14,7 @@ type menuService struct {
 type MenuService interface {
 	CreateNewMenu(model.Menu) error
 	GetRecommendedMenu(foodType string, spicyNess bool, price float64) (model.RecommendedMenu, error)
+	GetAllFoodType() ([]model.Menu, error)
 }
 
 func NewMenuService(menuRepository repository.MenuRepository, restaurantRepository repository.RestaurantRepository) *menuService {
@@ -64,4 +65,18 @@ func (s *menuService) GetRecommendedMenu(foodType string, spicyNess bool, price 
 
 	log.Info("Get restaurant by id successfully")
 	return recommendedMenu, nil
+}
+
+func (s *menuService) GetAllFoodType() (foodTypes []model.Menu, err error) {
+	log.Info("Get all food type")
+	defer log.Info("Return all food type")
+
+	foodTypes, err = s.menuRepository.QueryAllFoodType()
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	log.Info("Get all food type successfully")
+	return foodTypes, nil
 }
