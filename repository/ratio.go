@@ -85,7 +85,8 @@ func (r *ratioRepository) QueryPopularityFromAverageMenuPrice() ([]model.Popular
 		INNER JOIN restaurant_popularity rp
 		ON m.restaurant_id = rp.restaurant_id
 		) avg_price
-		GROUP BY restaurant_id;
+		GROUP BY restaurant_id
+		ORDER BY average_price;
 	`)
 	if err != nil {
 		logger.Error(err)
