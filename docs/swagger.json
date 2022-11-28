@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "http"
+        "https"
     ],
     "swagger": "2.0",
     "info": {
@@ -16,7 +16,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8888",
+    "host": "kurester.herokuapp.com",
     "paths": {
         "/": {
             "get": {
