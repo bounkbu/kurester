@@ -22,5 +22,5 @@ jobs:
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "kurester"
-          heroku_email: ${{ github.event.pusher.email }}
+          heroku_email: "thanathip.suw@ku.th"
           usedocker: true
