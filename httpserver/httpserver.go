@@ -71,6 +71,7 @@ func (server *Server) SetUpRouter() {
 	server.App.POST("/restarants", restaurantHandler.CreateNewRestaurantHandler)
 	server.App.POST("/menus", menuHandler.CreateNewMenuHandler)
 	server.App.GET("/menus/type", menuHandler.GetAllFoodType)
+	server.App.GET("/menus/type/min-price", menuHandler.GetMenuMinPrice)
 	server.App.POST("/form", formHandler.SubmitFormHandler)
 	server.App.GET("/ratio/spicyness", ratioHandler.GetSpicynessRatioHandler)
 	server.App.GET("/ratio/price", ratioHandler.GetPriceRatioHandler)
