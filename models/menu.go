@@ -23,3 +23,8 @@ type RecommendedMenu struct {
 	IsSpicy    bool       `json:"is_spicy" db:"is_spicy"`
 	CreatedAt  time.Time  `json:"created_at" db:"created_at"`
 }
+
+type MenuMinPrice struct {
+	Type  string  `json:"type" db:"type"`
+	Price float64 `json:"price" db:"price"`
+}

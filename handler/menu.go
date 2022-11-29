@@ -61,3 +61,21 @@ func (h *menuHandler) GetAllFoodType(c *gin.Context) {
 
 	c.JSON(http.StatusOK, foodTypes)
 }
+
+// GetMenuMinPrice godoc
+// @summary Get min price of each food type
+// @tags Menu
+// @id GetMenuMinPrice
+// @Success 200 {object} map[string]float64
+// @Failure 400
+// @Failure 500
+// @Router /menus/type/min-price [get]
+func (h *menuHandler) GetMenuMinPrice(c *gin.Context) {
+	menuMinPrice, err := h.menuService.GetMenuMinPrice()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, menuMinPrice)
+}
