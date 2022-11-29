@@ -2,8 +2,6 @@ package repository
 
 import (
 	"errors"
-	"math/rand"
-	"time"
 
 	model "github.com/BounkBU/kurester/models"
 	"github.com/jmoiron/sqlx"
@@ -56,11 +54,14 @@ func (r *menuRepository) QueryRecommendedMenu(foodType string, spicyNess bool, p
 
 	var menus []model.Menu
 	err = r.db.Select(&menus, `
-		SELECT *
-		FROM menu
+		SELECT menu.id, menu.restaurant_id, name, pictureUrl, type, price, is_spicy, created_at
+		FROM menu, restaurant_popularity
 		WHERE type = ?
+		AND menu.restaurant_id = restaurant_popularity.restaurant_id
 		AND is_spicy = ?
-		HAVING price <= ?;
+		HAVING price <= ?
+		ORDER BY popularity DESC, price DESC;
+	
 	`, foodType, spicyNess, price)
 	if err != nil {
 		logger.Error(err)
@@ -73,10 +74,7 @@ func (r *menuRepository) QueryRecommendedMenu(foodType string, spicyNess bool, p
 		return recommendedMenu, ErrNotFound
 	}
 
-	rand.Seed(time.Now().Unix())
-	n := rand.Int() % menuLength
-
-	return menus[n], nil
+	return menus[0], nil
 }
 
 func (r *menuRepository) QueryAllFoodType() (foodTypes []model.Menu, err error) {
