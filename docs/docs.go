@@ -70,6 +70,17 @@ const docTemplate = `{
                 ],
                 "summary": "Create form, analyze the appropriate menu from request and find nearest restaurants",
                 "operationId": "SubmitForm",
+                "parameters": [
+                    {
+                        "description": "request form data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Form"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -365,6 +376,29 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "percent": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Form": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "faculty_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_spicy": {
+                    "type": "boolean"
+                },
+                "price": {
                     "type": "number"
                 },
                 "type": {

@@ -13,6 +13,21 @@ definitions:
       type:
         type: string
     type: object
+  model.Form:
+    properties:
+      created_at:
+        type: string
+      faculty_id:
+        type: integer
+      id:
+        type: integer
+      is_spicy:
+        type: boolean
+      price:
+        type: number
+      type:
+        type: string
+    type: object
   model.Menu:
     properties:
       created_at:
@@ -151,6 +166,13 @@ paths:
   /form:
     post:
       operationId: SubmitForm
+      parameters:
+      - description: request form data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.Form'
       responses:
         "200":
           description: OK
