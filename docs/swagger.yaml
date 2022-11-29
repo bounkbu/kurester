@@ -179,6 +179,23 @@ paths:
       summary: Create new menu
       tags:
       - Menu
+  /menus/min-price:
+    get:
+      operationId: GetMenuMinPrice
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: number
+            type: object
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get min price of each food type
+      tags:
+      - Menu
   /menus/type:
     get:
       operationId: GetAllFoodType
