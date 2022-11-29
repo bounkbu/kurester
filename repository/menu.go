@@ -17,6 +17,7 @@ type MenuRepository interface {
 	InsertMenu(model.Menu) error
 	QueryRecommendedMenu(foodType string, spicyNess bool, price float64) (model.Menu, error)
 	QueryAllFoodType() ([]model.Menu, error)
+	QueryMenuMinPrice() ([]model.MenuMinPrice, error)
 }
 
 func NewMenuRepository(db *sqlx.DB) *menuRepository {
@@ -93,4 +94,22 @@ func (r *menuRepository) QueryAllFoodType() (foodTypes []model.Menu, err error) 
 
 	logger.Info("Get all food type")
 	return foodTypes, nil
+}
+
+func (r *menuRepository) QueryMenuMinPrice() (menuMinPrice []model.MenuMinPrice, err error) {
+	logger := generateLogger("QueryMenuMinPrice")
+
+	q := `
+		SELECT type, min(price) as price
+		FROM menu
+		GROUP BY type
+	`
+	err = r.db.Select(&menuMinPrice, q)
+	if err != nil {
+		logger.Error(err)
+		return menuMinPrice, err
+	}
+
+	logger.Info("Get min price of menu type")
+	return menuMinPrice, nil
 }

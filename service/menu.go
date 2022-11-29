@@ -15,6 +15,7 @@ type MenuService interface {
 	CreateNewMenu(model.Menu) error
 	GetRecommendedMenu(foodType string, spicyNess bool, price float64) (model.RecommendedMenu, error)
 	GetAllFoodType() ([]model.Menu, error)
+	GetMenuMinPrice() (map[string]float64, error)
 }
 
 func NewMenuService(menuRepository repository.MenuRepository, restaurantRepository repository.RestaurantRepository) *menuService {
@@ -79,4 +80,23 @@ func (s *menuService) GetAllFoodType() (foodTypes []model.Menu, err error) {
 
 	log.Info("Get all food type successfully")
 	return foodTypes, nil
+}
+
+func (s *menuService) GetMenuMinPrice() (map[string]float64, error) {
+	log.Info("Get getting min price of menu")
+	defer log.Info("End getting min price of menu")
+	results := make(map[string]float64)
+
+	menuMinPrice, err := s.menuRepository.QueryMenuMinPrice()
+	if err != nil {
+		log.Error(err)
+		return results, err
+	}
+
+	for _, v := range menuMinPrice {
+		results[v.Type] = v.Price
+	}
+
+	log.Info("Get all min price of menu type successfully")
+	return results, nil
 }
