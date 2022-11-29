@@ -26,6 +26,7 @@ func NewFormHandler(menuService service.MenuService, restaurantService service.R
 // @summary Create form, analyze the appropriate menu from request and find nearest restaurants
 // @tags Form
 // @id SubmitForm
+// @param data body model.Form true "request form data"
 // @Success 200 {object} model.SubmitFormResponse
 // @Failure 400
 // @Failure 500
