@@ -109,32 +109,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/menus/min-price": {
-            "get": {
-                "tags": [
-                    "Menu"
-                ],
-                "summary": "Get min price of each food type",
-                "operationId": "GetMenuMinPrice",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "number"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
         "/menus/type": {
             "get": {
                 "tags": [
@@ -149,6 +123,32 @@ const docTemplate = `{
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/model.Menu"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/menus/type/min-price": {
+            "get": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Get min price of each food type",
+                "operationId": "GetMenuMinPrice",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "number"
                             }
                         }
                     },
