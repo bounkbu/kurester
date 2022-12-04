@@ -2,7 +2,7 @@ MYSQL_HOSTNAME := 127.0.0.1
 MYSQL_PORT := 3306
 MYSQL_USERNAME := root
 MYSQL_PASSWORD :=
-MYSQL_DATABASE := kurester
+MYSQL_DATABASE :=
 
 server:
 	go run main.go
