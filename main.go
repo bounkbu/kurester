@@ -8,21 +8,21 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var serverConfig *config.Config
+var appConfig *config.Config
 
 func init() {
-	serverConfig = config.LoadConfig()
+	appConfig = config.LoadConfig()
 
-	logger.InitLogger(serverConfig.App)
+	logger.InitLogger(appConfig.App)
 }
 
 func main() {
-	db, err := database.NewMySQLDatabaseConnection(serverConfig)
+	db, err := database.NewMySQLDatabaseConnection(appConfig)
 	if err != nil {
 		log.Fatalf("error, create mysql database connection, %s", err.Error())
 	}
 
-	server := httpserver.NewHTTPServer(serverConfig, db)
+	server := httpserver.NewHTTPServer(appConfig, db)
 
 	server.Start()
 }
