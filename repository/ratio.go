@@ -102,14 +102,15 @@ func (r *ratioRepository) QueryAveragePopularityFromPrice() ([]model.AveragePopu
 
 	var averagePopularity []model.AveragePopularityFromPrice
 	err := r.db.Select(&averagePopularity, `
-		SELECT price, AVG(popularity) average_popularity
+		SELECT type, price, popularity
 		FROM (
-		SELECT m.restaurant_id, price, popularity
-		FROM menu m
-		INNER JOIN restaurant_popularity rp
-		ON m.restaurant_id = rp.restaurant_id
+			SELECT type, price, popularity
+			FROM menu m
+			INNER JOIN restaurant_popularity rp
+			ON m.restaurant_id = rp.restaurant_id
 		) avg_price
-		GROUP BY price;
+		GROUP BY price, type, popularity
+		ORDER BY type;
 	`)
 	if err != nil {
 		logger.Error(err)

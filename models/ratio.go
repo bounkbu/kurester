@@ -9,6 +9,11 @@ type PriceRatio struct {
 	Results map[string]int `json:"results"`
 }
 
+type ChartRatio struct {
+	XAxis []float64 `json:"x"`
+	YAxis []int     `json:"y"`
+}
+
 type FoodTypeRatio struct {
 	Type    string  `json:"type" db:"Type"`
 	Percent float64 `json:"percent" db:"Percent"`
@@ -20,7 +25,12 @@ type PopularityFromAverageMenuPrice struct {
 	Popularity     int64   `json:"popularity" db:"popularity"`
 }
 
+type PopularityAndPriceRatio struct {
+	Results map[string]ChartRatio `json:"results"`
+}
+
 type AveragePopularityFromPrice struct {
-	Price             float64 `json:"price" db:"price"`
-	AveragePopularity float64 `json:"average_popularity" db:"average_popularity"`
+	Type       string  `json:"type"`
+	Price      float64 `json:"price" db:"price"`
+	Popularity int     `json:"popularity"`
 }
