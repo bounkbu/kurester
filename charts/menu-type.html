@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <title>Popularity of the price from menu type</title>
+  <body style="margin: 0">
+    <div id="myPlot" style="width: 100%; height: 80vh"></div>
+
+    <script>
+      async function createChart() {
+        var response = await fetch(
+          'http://localhost:8888/ratio/popularity/average',
+          {
+            method: 'GET',
+          }
+        )
+        var table = await response.json()
+        console.log(table)
+
+        var data = []
+        for (const [key, value] of Object.entries(table.results)) {
+          data.push({
+            x: value.x,
+            y: value.y,
+            name: key,
+            mode: 'markers',
+            type: 'scatter',
+          })
+        }
+
+        var layout = {
+          title: 'Popularity of the price from menu type',
+          xaxis: { title: 'Price' },
+          yaxis: { title: 'Popularity' },
+        }
+        var config = { responsive: true }
+        Plotly.newPlot('myPlot', data, layout, config)
+      }
+      createChart()
+    </script>
+  </body>
+</html>

@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+
 	model "github.com/BounkBU/kurester/models"
 	"github.com/BounkBU/kurester/pkg/util"
 	"github.com/BounkBU/kurester/repository"
@@ -16,7 +18,7 @@ type RatioService interface {
 	GetPriceRatio() (model.PriceRatio, error)
 	GetFoodTypeRatio() ([]model.FoodTypeRatio, error)
 	GetPopularityFromAverageMenuPrice() ([]model.PopularityFromAverageMenuPrice, error)
-	GetAveragePopularityFromPriceRange() (model.PriceRatio, error)
+	GetAveragePopularityFromPriceRange() (model.PopularityAndPriceRatio, error)
 }
 
 func NewRatioService(ratioRepository repository.RatioRepository) *ratioService {
@@ -106,24 +108,38 @@ func (s *ratioService) GetPopularityFromAverageMenuPrice() ([]model.PopularityFr
 	return popularity, nil
 }
 
-func (s *ratioService) GetAveragePopularityFromPriceRange() (model.PriceRatio, error) {
+func (s *ratioService) GetAveragePopularityFromPriceRange() (model.PopularityAndPriceRatio, error) {
 	log.Info("Start getting average popularity from price range ratio")
 	defer log.Info("End getting average popularity from price range ratio")
 
-	results := make(map[string]int)
+	results := make(map[string]model.ChartRatio)
 
 	averagePopularity, err := s.ratioRepository.QueryAveragePopularityFromPrice()
 	if err != nil {
 		log.Error(err)
-		return model.PriceRatio{}, err
+		return model.PopularityAndPriceRatio{}, err
 	}
 
 	for _, v := range averagePopularity {
-		priceRange := util.PriceCountingHelper(v.Price)
-		results[priceRange] += 1
+		val, ok := results[v.Type]
+		if !ok {
+			results[v.Type] = model.ChartRatio{
+				XAxis: []float64{v.Price},
+				YAxis: []int{v.Popularity},
+			}
+		} else {
+			prevXAxis := val.XAxis
+			prevYAxis := val.YAxis
+			results[v.Type] = model.ChartRatio{
+				XAxis: append(prevXAxis, v.Price),
+				YAxis: append(prevYAxis, v.Popularity),
+			}
+		}
 	}
 
-	priceRatio := model.PriceRatio{
+	fmt.Println(results)
+
+	priceRatio := model.PopularityAndPriceRatio{
 		Results: results,
 	}
 
