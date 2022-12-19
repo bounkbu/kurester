@@ -25,6 +25,8 @@
 
         var layout = {
           title: 'Popularity from the average menu price of the restaurant',
+          xaxis: { title: 'Average Price' },
+          yaxis: { title: 'Popularity' },
         }
         var config = { responsive: true }
         Plotly.newPlot('myPlot', data, layout, config)
