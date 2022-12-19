@@ -40,8 +40,8 @@ func NewHTTPServer(config *config.Config, db *sqlx.DB) *Server {
 // @license.name MIT License
 // @license.url https://choosealicense.com/licenses/mit/
 
-// @schemes https
-// @host kurester.herokuapp.com
+// @schemes http
+// @host localhost:8888
 func (server *Server) SetUpRouter() {
 	server.App.Use(cors.Default())
 	server.App.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

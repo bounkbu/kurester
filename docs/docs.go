@@ -206,10 +206,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.PriceRatio"
-                            }
+                            "$ref": "#/definitions/model.PopularityAndPriceRatio"
                         }
                     },
                     "500": {
@@ -361,6 +358,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.ChartRatio": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "y": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "model.Faculty": {
             "type": "object",
             "properties": {
@@ -454,6 +468,17 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "model.PopularityAndPriceRatio": {
+            "type": "object",
+            "properties": {
+                "results": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/model.ChartRatio"
+                    }
                 }
             }
         },
@@ -562,9 +587,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "kurester.herokuapp.com",
+	Host:             "localhost:8888",
 	BasePath:         "",
-	Schemes:          []string{"https"},
+	Schemes:          []string{"http"},
 	Title:            "KU Rester API",
 	Description:      "The KU Rester web API",
 	InfoInstanceName: "swagger",

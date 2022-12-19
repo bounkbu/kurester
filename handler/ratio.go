@@ -89,7 +89,7 @@ func (h *ratioHandler) GetPopularityFromAverageMenuPrice(c *gin.Context) {
 // @summary Get the average popularity compare with range of menu price
 // @tags Visualization
 // @id GetAveragePopularityFromPriceRange
-// @Success 200 {array} model.PriceRatio
+// @Success 200 {object} model.PopularityAndPriceRatio
 // @Failure 500
 // @Router /ratio/popularity/average [get]
 func (h *ratioHandler) GetAveragePopularityFromPriceRange(c *gin.Context) {

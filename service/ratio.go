@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	model "github.com/BounkBU/kurester/models"
 	"github.com/BounkBU/kurester/pkg/util"
 	"github.com/BounkBU/kurester/repository"
@@ -136,8 +134,6 @@ func (s *ratioService) GetAveragePopularityFromPriceRange() (model.PopularityAnd
 			}
 		}
 	}
-
-	fmt.Println(results)
 
 	priceRatio := model.PopularityAndPriceRatio{
 		Results: results,

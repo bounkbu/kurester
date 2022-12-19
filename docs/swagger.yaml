@@ -1,4 +1,15 @@
 definitions:
+  model.ChartRatio:
+    properties:
+      x:
+        items:
+          type: number
+        type: array
+      "y":
+        items:
+          type: integer
+        type: array
+    type: object
   model.Faculty:
     properties:
       id:
@@ -60,6 +71,13 @@ definitions:
         type: integer
       name:
         type: string
+    type: object
+  model.PopularityAndPriceRatio:
+    properties:
+      results:
+        additionalProperties:
+          $ref: '#/definitions/model.ChartRatio'
+        type: object
     type: object
   model.PopularityFromAverageMenuPrice:
     properties:
@@ -125,7 +143,7 @@ definitions:
       recommended_menu:
         $ref: '#/definitions/model.RecommendedMenu'
     type: object
-host: kurester.herokuapp.com
+host: localhost:8888
 info:
   contact:
     email: thanathip.suw@gmail.com
@@ -257,9 +275,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/model.PriceRatio'
-            type: array
+            $ref: '#/definitions/model.PopularityAndPriceRatio'
         "500":
           description: Internal Server Error
       summary: Get the average popularity compare with range of menu price
@@ -359,5 +375,5 @@ paths:
       tags:
       - Restaurant
 schemes:
-- https
+- http
 swagger: "2.0"
