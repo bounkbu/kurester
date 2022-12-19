@@ -13,7 +13,6 @@
           method: 'GET',
         })
         var table = await response.json()
-        console.log(table)
         var data = table.map((r) => {
           return {
             x: [r.average_price],
