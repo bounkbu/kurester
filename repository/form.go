@@ -23,7 +23,7 @@ func (r *formRepository) InsertForm(form model.Form) error {
 	logger := generateLogger("InsertForm")
 
 	_, err := r.db.Query(`
-		INSERT INTO form (faculty_id, type, price, is_spicy)
+		INSERT INTO`+"`kurester.form`"+`(faculty_id, type, price, is_spicy)
 		VALUES (?, ?, ?, ?)
 	`,
 		form.FacultyID,

@@ -31,7 +31,7 @@ func (r *menuRepository) InsertMenu(menu model.Menu) error {
 	logger := generateLogger("InsertMenu")
 
 	_, err := r.db.Query(`
-		INSERT INTO menu (restaurant_id, name, type, price, is_spicy)
+		INSERT INTO`+"`kurester.menu`"+`(restaurant_id, name, type, price, is_spicy)
 		VALUES (?, ?, ?, ?, ?)
 	`,
 		menu.RestaurantId,
@@ -55,13 +55,12 @@ func (r *menuRepository) QueryRecommendedMenu(foodType string, spicyNess bool, p
 	var menus []model.Menu
 	err = r.db.Select(&menus, `
 		SELECT menu.id, menu.restaurant_id, name, pictureUrl, type, price, is_spicy, created_at
-		FROM menu, restaurant_popularity
+		FROM`+"`kurester.menu`"+`as menu,`+"`kurester.restaurant_popularity`"+`as restaurant_popularity
 		WHERE type = ?
 		AND menu.restaurant_id = restaurant_popularity.restaurant_id
 		AND is_spicy = ?
 		HAVING price <= ?
 		ORDER BY popularity DESC, price DESC;
-	
 	`, foodType, spicyNess, price)
 	if err != nil {
 		logger.Error(err)
@@ -80,10 +79,7 @@ func (r *menuRepository) QueryRecommendedMenu(foodType string, spicyNess bool, p
 func (r *menuRepository) QueryAllFoodType() (foodTypes []model.Menu, err error) {
 	logger := generateLogger("QueryAllFoodType")
 
-	q := `
-		SELECT DISTINCT type
-		FROM menu;
-	`
+	q := "SELECT DISTINCT type FROM `kurester.menu`"
 	err = r.db.Select(&foodTypes, q)
 	if err != nil {
 		logger.Error(err)
@@ -99,7 +95,7 @@ func (r *menuRepository) QueryMenuMinPrice() (menuMinPrice []model.MenuMinPrice,
 
 	q := `
 		SELECT type, min(price) as price
-		FROM menu
+		FROM` + "`kurester.menu`" + `
 		GROUP BY type
 	`
 	err = r.db.Select(&menuMinPrice, q)

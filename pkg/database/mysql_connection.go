@@ -9,7 +9,7 @@ import (
 )
 
 func NewMySQLDatabaseConnection(config *config.Config) (*sqlx.DB, error) {
-	mysqlUrl := util.NewConnectionUrlBuilder("dns", config.Database)
+	mysqlUrl := util.NewConnectionUrlBuilder("mysql", config.Database)
 	db, err := sqlx.Connect("mysql", mysqlUrl)
 	if err != nil {
 		log.Errorf("error, can't connect to database, %s", err.Error())
