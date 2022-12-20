@@ -31,7 +31,7 @@ func (r *restaurantRepository) InsertRestarant(restaurant model.Restaurant) erro
 	logger := generateLogger("InsertRestarant")
 
 	_, err := r.db.Query(`
-		INSERT INTO`+"`kurester.restaurant`"+`(name, latitude, longitude)
+		INSERT INTO restaurant (name, latitude, longitude)
 		VALUES (?, ?, ?)
 	`,
 		restaurant.Name,
@@ -54,11 +54,11 @@ func (r *restaurantRepository) QueryPopularRestaurant() ([]model.Restaurant, err
 	res := []model.Restaurant{}
 	q := `
 		SELECT restaurant.id, restaurant.name, restaurant.latitude, restaurant.longitude
-		FROM` + "`kurester.restaurant`" + `as restaurant
-		JOIN` + "`kurester.restaurant_popularity`" + `as restaurant_popularity ON
+		FROM restaurant
+		JOIN restaurant_popularity ON
 		restaurant.id = restaurant_popularity.restaurant_id
 		ORDER BY restaurant_popularity.popularity DESC
-		LIMIT 5;
+		LIMIT 5
 	`
 
 	err := r.db.Select(&res, q)
@@ -75,7 +75,7 @@ func (r *restaurantRepository) InsertRestaurantPopularity(restaurantId int64) er
 	logger := generateLogger("InsertRestaurantPopularity")
 
 	_, err := r.db.Query(`
-		INSERT INTO`+"`kurester.restaurant_popularity`"+`(restaurant_id)
+		INSERT INTO restaurant_popularity (restaurant_id)
 		VALUES (?)
 	`,
 		restaurantId,
@@ -92,7 +92,7 @@ func (r *restaurantRepository) InsertRestaurantPopularity(restaurantId int64) er
 func (r *restaurantRepository) UpdateRestaurantPopularity(restaurantId int64) error {
 	logger := generateLogger("UpdateRestaurantPopularity")
 
-	_, err := r.db.Query("UPDATE `kurester.restaurant_popularity` SET popularity = popularity + 1 WHERE restaurant_id=?", restaurantId)
+	_, err := r.db.Query("UPDATE restaurant_popularity SET popularity = popularity + 1 WHERE restaurant_id=?", restaurantId)
 	if err != nil {
 		logger.Error(err)
 		return err
@@ -105,7 +105,7 @@ func (r *restaurantRepository) UpdateRestaurantPopularity(restaurantId int64) er
 func (r *restaurantRepository) QueryRestaurantPopularity(restaurantId int64) (restaurantPopularity model.RestaurantPopularity, err error) {
 	logger := generateLogger("QueryRestaurantPopularity")
 
-	err = r.db.Get(&restaurantPopularity, "SELECT * from `kurester.restaurant_popularity` WHERE restaurant_id=?", restaurantId)
+	err = r.db.Get(&restaurantPopularity, "SELECT * from restaurant_popularity WHERE restaurant_id=?", restaurantId)
 	if err != nil {
 		logger.Error(err)
 		return
@@ -119,9 +119,9 @@ func (r *restaurantRepository) QueryNearestRestaurants(restaurantId int64) (near
 
 	q := fmt.Sprintf(`
 		SELECT id, name, SQRT(
-			POW(69.1 * (latitude - (SELECT latitude FROM`+"`kurester.faculty`"+` as faculty WHERE id = %d)), 2) +
-			POW(69.1 * ((SELECT longitude FROM`+"`kurester.faculty`"+`as faculty WHERE id = %d) - longitude) * COS(latitude / 57.3), 2)) AS distance
-		FROM`+"`kurester.restaurant`"+` as restaurant
+			POW(69.1 * (latitude - (SELECT latitude FROM faculty WHERE id = %d)), 2) +
+			POW(69.1 * ((SELECT longitude FROM faculty WHERE id = %d) - longitude) * COS(latitude / 57.3), 2)) AS distance
+		FROM restaurant
 		HAVING distance < 25
 		ORDER BY distance
 		LIMIT 5;
@@ -140,7 +140,7 @@ func (r *restaurantRepository) QueryNearestRestaurants(restaurantId int64) (near
 func (r *restaurantRepository) QueryRestaurantById(id int64) (restaurant model.Restaurant, err error) {
 	logger := generateLogger("QueryRestaurantById")
 
-	err = r.db.Get(&restaurant, "SELECT * from `kurester.restaurant` WHERE id=?", id)
+	err = r.db.Get(&restaurant, "SELECT * from restaurant WHERE id=?", id)
 	if err != nil {
 		logger.Error(err)
 		return
