@@ -143,7 +143,7 @@ definitions:
       recommended_menu:
         $ref: '#/definitions/model.RecommendedMenu'
     type: object
-host: localhost:8888
+host: kurester.up.railway.app
 info:
   contact:
     email: thanathip.suw@gmail.com
@@ -375,5 +375,5 @@ paths:
       tags:
       - Restaurant
 schemes:
-- http
+- https
 swagger: "2.0"
