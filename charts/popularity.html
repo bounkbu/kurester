@@ -9,9 +9,12 @@
 
     <script>
       async function createChart() {
-        var response = await fetch('http://localhost:8888/ratio/popularity', {
-          method: 'GET',
-        })
+        var response = await fetch(
+          'https://kurester.up.railway.app/ratio/popularity',
+          {
+            method: 'GET',
+          }
+        )
         var table = await response.json()
         var data = table.map((r) => {
           return {
