@@ -103,7 +103,7 @@ npm run android
 
 ## Swagger UI Documentation 📄
 
-[Swagger](http://localhost:8888/swagger/index.html)
+[Swagger](https://kurester.up.railway.app/swagger/index.html)
 
 ## Data Visualization 📊
 
